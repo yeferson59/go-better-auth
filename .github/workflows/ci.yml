@@ -2,18 +2,18 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    
+
     services:
       postgres:
-        image: postgres:15
+        image: postgres:18
         env:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: go_better_auth_test
@@ -27,45 +27,45 @@ jobs:
 
     strategy:
       matrix:
-        go-version: [1.21, 1.22]
+        go-version: [1.25, 1.26]
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: ${{ matrix.go-version }}
+      - name: Set up Go
+        uses: actions/setup-go@v7
+        with:
+          go-version: ${{ matrix.go-version }}
 
-    - name: Cache Go modules
-      uses: actions/cache@v3
-      with:
-        path: ~/go/pkg/mod
-        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-        restore-keys: |
-          ${{ runner.os }}-go-
+      - name: Cache Go modules
+        uses: actions/cache@v3
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
 
-    - name: Install dependencies
-      run: |
-        go mod download
-        go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+      - name: Install dependencies
+        run: |
+          go mod download
+          go mod verify
 
-    - name: Run tests
-      run: make test
-      env:
-        DATABASE_URL: postgres://postgres:postgres@localhost:5432/go_better_auth_test?sslmode=disable
+      - name: Run tests
+        run: make test
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/go_better_auth_test?sslmode=disable
 
-    - name: Run linter
-      run: make lint
+      - name: Run linter
+        run: make lint
 
-    - name: Build
-      run: make build
+      - name: Build
+        run: make build
 
-    - name: Build examples
-      run: make build-examples
+      - name: Build examples
+        run: make build-examples
 
-    - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v3
-      if: matrix.go-version == '1.21'
-      with:
-        file: ./coverage.out
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        if: matrix.go-version == '1.25'
+        with:
+          file: ./coverage.out
