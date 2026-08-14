@@ -10,7 +10,7 @@ indent_size = 2
 
 [*.go]
 indent_style = tab
-indent_size = 4
+indent_size = 2
 
 [*.{md,yml,yaml}]
 trim_trailing_whitespace = false
