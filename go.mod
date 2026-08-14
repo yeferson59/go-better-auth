@@ -1,6 +1,6 @@
 module github.com/yourusername/go-better-auth
 
-go 1.25.0
+go 1.26.6
 
 require (
 	github.com/caarlos0/env/v10 v10.0.0
