@@ -22,6 +22,18 @@ func (e *Error) Error() string {
 	return fmt.Sprintf("%s: %s", e.Code, e.Message)
 }
 
+// Is reports whether target is a domain error carrying the same code, which lets
+// callers match on the kind of failure with errors.Is without caring about the
+// identifier baked into Details.
+func (e *Error) Is(target error) bool {
+	other, ok := target.(*Error)
+	if !ok {
+		return false
+	}
+
+	return e.Code == other.Code
+}
+
 // Common error codes
 const (
 	// Authentication errors
