@@ -11,7 +11,6 @@ import (
 
 	"github.com/yeferson59/go-better-auth/internal/core/entities"
 	apperrors "github.com/yeferson59/go-better-auth/internal/core/errors"
-	"github.com/yeferson59/go-better-auth/internal/core/interfaces"
 	"github.com/yeferson59/go-better-auth/internal/infra/db/models"
 )
 
@@ -27,7 +26,7 @@ type UserRepository struct {
 // handlers must translate them into the generic invalid-credentials error before they
 // reach a client, or the response becomes a user-enumeration oracle.
 // NewUserRepository creates a new SQLite user repository
-func NewUserRepository(db *gorm.DB) interfaces.UserRepository {
+func NewUserRepository(db *gorm.DB) *UserRepository {
 	return &UserRepository{db: db}
 }
 
@@ -163,16 +162,9 @@ func (r *UserRepository) Count(ctx context.Context) (int64, error) {
 
 // Search searches for users by query (using LIKE for SQLite)
 func (r *UserRepository) Search(ctx context.Context, query string, limit, offset int) ([]*entities.User, error) {
-	var models []models.User
 	searchQuery := "%" + query + "%"
-
-	dbQuery := r.db.WithContext(ctx).
-		Where("email LIKE ? OR username LIKE ? OR first_name LIKE ? OR last_name LIKE ?",
-			searchQuery, searchQuery, searchQuery, searchQuery).
-		Limit(limit).
-		Offset(offset)
-
-	if err := dbQuery.Find(&models).Error; err != nil {
+	models, err := gorm.G[models.User](r.db).Where("email LIKE ? OR username LIKE ? OR first_name LIKE ? OR last_name LIKE ?", searchQuery, searchQuery, searchQuery, searchQuery).Limit(limit).Offset(offset).Find(ctx)
+	if err != nil {
 		return nil, fmt.Errorf("failed to search users: %w", err)
 	}
 
