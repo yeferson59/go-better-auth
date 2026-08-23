@@ -1,7 +1,7 @@
 package models
 
 import (
-	"encoding/json"
+	"encoding/json/v2"
 
 	"github.com/yeferson59/go-better-auth/internal/core/entities"
 )
