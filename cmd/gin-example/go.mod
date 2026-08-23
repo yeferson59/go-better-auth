@@ -1,3 +1,3 @@
-module github.com/yourusername/go-better-auth/cmd/gin-example
+module github.com/yeferson59/go-better-auth/cmd/gin-example
 
-go 1.26.6
+go 1.27.0
