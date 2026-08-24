@@ -1,5 +1,9 @@
 .PHONY: help build test lint fmt clean install-tools migrate dev examples
 
+# Variables
+POSTGRES_DSN ?= postgres://user:password@localhost:5432/go_better_auth?sslmode=disable
+SQLITE_DSN ?= ./db/go_better_auth.db
+
 # Default target
 help: ## Show this help message
 	@echo "Available targets:"
@@ -21,6 +25,17 @@ test-coverage: ## Run tests with coverage
 	go test -v -coverprofile=coverage.out ./...
 	go tool cover -html=coverage.out -o coverage.html
 
+test-integration: ## Run integration tests
+	go test -v ./tests/integration/...
+
+test-postgres: ## Run PostgreSQL integration tests
+	go test -v ./tests/integration -run TestPostgresUserRepository
+
+test-sqlite: ## Run SQLite integration tests
+	go test -v ./tests/integration -run TestSQLiteUserRepository
+
+test-all: test test-integration ## Run all tests
+
 # Code quality
 lint: ## Run linter
 	golangci-lint run
@@ -35,6 +50,34 @@ dev: fmt lint test ## Run full development cycle (format, lint, test)
 # Database
 migrate: ## Run database migrations
 	./scripts/migrate.sh
+
+# Migration tool
+build-migrate: ## Build the migration tool
+	go build -o bin/migrate ./cmd/migrate/main.go
+
+# PostgreSQL migrations
+migrate-up: build-migrate ## Run migrations up (PostgreSQL)
+	./bin/migrate -driver=postgres -dsn="$(POSTGRES_DSN)" -direction=up
+
+migrate-down: build-migrate ## Run migrations down (PostgreSQL)
+	./bin/migrate -driver=postgres -dsn="$(POSTGRES_DSN)" -direction=down
+
+# SQLite migrations
+migrate-up-sqlite: build-migrate ## Run migrations up (SQLite)
+	mkdir -p ./db
+	./bin/migrate -driver=sqlite3 -dsn="$(SQLITE_DSN)" -direction=up
+
+migrate-down-sqlite: build-migrate ## Run migrations down (SQLite)
+	./bin/migrate -driver=sqlite3 -dsn="$(SQLITE_DSN)" -direction=down
+
+# Create migrations
+migrate-create: build-migrate ## Create new migration file
+	@read -p "Enter migration name: " name; \
+	./bin/migrate -driver=postgres -create="$$name"
+
+migrate-create-sqlite: build-migrate ## Create new SQLite migration file
+	@read -p "Enter migration name: " name; \
+	./bin/migrate -driver=sqlite3 -create="$$name"
 
 # Dependencies
 install-tools: ## Install development tools
