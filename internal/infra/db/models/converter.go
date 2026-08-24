@@ -2,6 +2,7 @@ package models
 
 import (
 	"encoding/json/v2"
+	"uuid"
 
 	"github.com/yeferson59/go-better-auth/internal/core/entities"
 )
@@ -9,7 +10,7 @@ import (
 // ToUserEntity converts a GORM User model to an entity
 func (u *User) ToEntity() *entities.User {
 	entity := &entities.User{
-		ID:          u.ID,
+		ID:          u.ID.String(),
 		Email:       u.Email,
 		Username:    u.Username,
 		Password:    u.Password,
@@ -42,7 +43,7 @@ func (u *User) ToEntity() *entities.User {
 
 // FromUserEntity converts an entity to a GORM User model
 func (u *User) FromEntity(entity *entities.User) {
-	u.ID = entity.ID
+	u.ID = uuid.MustParse(entity.ID)
 	u.Email = entity.Email
 	u.Username = entity.Username
 	u.Password = entity.Password
@@ -58,7 +59,7 @@ func (u *User) FromEntity(entity *entities.User) {
 // ToRoleEntity converts a GORM Role model to an entity
 func (r *Role) ToEntity() *entities.Role {
 	entity := &entities.Role{
-		ID:          r.ID,
+		ID:          r.ID.String(),
 		Name:        r.Name,
 		Description: r.Description,
 		IsSystem:    r.IsSystem,
@@ -76,7 +77,7 @@ func (r *Role) ToEntity() *entities.Role {
 
 // FromRoleEntity converts an entity to a GORM Role model
 func (r *Role) FromEntity(entity *entities.Role) {
-	r.ID = entity.ID
+	r.ID = uuid.MustParse(entity.ID)
 	r.Name = entity.Name
 	r.Description = entity.Description
 	r.IsSystem = entity.IsSystem
@@ -87,7 +88,7 @@ func (r *Role) FromEntity(entity *entities.Role) {
 // ToPermissionEntity converts a GORM Permission model to an entity
 func (p *Permission) ToEntity() *entities.Permission {
 	return &entities.Permission{
-		ID:          p.ID,
+		ID:          p.ID.String(),
 		Name:        p.Name,
 		Description: p.Description,
 		Resource:    p.Resource,
@@ -100,7 +101,7 @@ func (p *Permission) ToEntity() *entities.Permission {
 
 // FromPermissionEntity converts an entity to a GORM Permission model
 func (p *Permission) FromEntity(entity *entities.Permission) {
-	p.ID = entity.ID
+	p.ID = uuid.MustParse(entity.ID)
 	p.Name = entity.Name
 	p.Description = entity.Description
 	p.Resource = entity.Resource
@@ -113,7 +114,7 @@ func (p *Permission) FromEntity(entity *entities.Permission) {
 // ToSessionEntity converts a GORM Session model to an entity
 func (s *Session) ToEntity() *entities.Session {
 	return &entities.Session{
-		ID:           s.ID,
+		ID:           s.ID.String(),
 		UserID:       s.UserID,
 		Token:        s.Token,
 		RefreshToken: s.RefreshToken,
@@ -128,7 +129,7 @@ func (s *Session) ToEntity() *entities.Session {
 
 // FromSessionEntity converts an entity to a GORM Session model
 func (s *Session) FromEntity(entity *entities.Session) {
-	s.ID = entity.ID
+	s.ID = uuid.MustParse(entity.ID)
 	s.UserID = entity.UserID
 	s.Token = entity.Token
 	s.RefreshToken = entity.RefreshToken
@@ -143,7 +144,7 @@ func (s *Session) FromEntity(entity *entities.Session) {
 // ToOAuthLinkEntity converts a GORM OAuthLink model to an entity
 func (o *OAuthLink) ToEntity() *entities.OAuthLink {
 	return &entities.OAuthLink{
-		ID:           o.ID,
+		ID:           o.ID.String(),
 		UserID:       o.UserID,
 		ProviderName: o.ProviderName,
 		ProviderID:   o.ProviderID,
@@ -157,7 +158,7 @@ func (o *OAuthLink) ToEntity() *entities.OAuthLink {
 
 // FromOAuthLinkEntity converts an entity to a GORM OAuthLink model
 func (o *OAuthLink) FromEntity(entity *entities.OAuthLink) {
-	o.ID = entity.ID
+	o.ID = uuid.MustParse(entity.ID)
 	o.UserID = entity.UserID
 	o.ProviderName = entity.ProviderName
 	o.ProviderID = entity.ProviderID
@@ -171,7 +172,7 @@ func (o *OAuthLink) FromEntity(entity *entities.OAuthLink) {
 // ToOAuthProviderEntity converts a GORM OAuthProvider model to an entity
 func (o *OAuthProvider) ToEntity() *entities.OAuthProvider {
 	entity := &entities.OAuthProvider{
-		ID:           o.ID,
+		ID:           o.ID.String(),
 		Name:         entities.Provider(o.Name),
 		DisplayName:  o.DisplayName,
 		ClientID:     o.ClientID,
@@ -200,7 +201,7 @@ func (o *OAuthProvider) ToEntity() *entities.OAuthProvider {
 
 // FromOAuthProviderEntity converts an entity to a GORM OAuthProvider model
 func (o *OAuthProvider) FromEntity(entity *entities.OAuthProvider) {
-	o.ID = entity.ID
+	o.ID = uuid.MustParse(entity.ID)
 	o.Name = string(entity.Name)
 	o.DisplayName = entity.DisplayName
 	o.ClientID = entity.ClientID
@@ -231,7 +232,7 @@ func (o *OAuthProvider) FromEntity(entity *entities.OAuthProvider) {
 // ToTokenEntity converts a GORM Token model to an entity
 func (t *Token) ToEntity() *entities.Token {
 	entity := &entities.Token{
-		ID:        t.ID,
+		ID:        t.ID.String(),
 		UserID:    t.UserID,
 		Token:     t.Token,
 		Type:      entities.TokenType(t.Type),
@@ -251,7 +252,7 @@ func (t *Token) ToEntity() *entities.Token {
 
 // FromTokenEntity converts an entity to a GORM Token model
 func (t *Token) FromEntity(entity *entities.Token) {
-	t.ID = entity.ID
+	t.ID = uuid.MustParse(entity.ID)
 	t.UserID = entity.UserID
 	t.Token = entity.Token
 	t.Type = string(entity.Type)
@@ -271,7 +272,7 @@ func (t *Token) FromEntity(entity *entities.Token) {
 // ToPasswordResetTokenEntity converts a GORM PasswordResetToken model to an entity
 func (p *PasswordResetToken) ToEntity() *entities.PasswordResetToken {
 	return &entities.PasswordResetToken{
-		ID:        p.ID,
+		ID:        p.ID.String(),
 		UserID:    p.UserID,
 		Token:     p.Token,
 		Email:     p.Email,
@@ -283,7 +284,7 @@ func (p *PasswordResetToken) ToEntity() *entities.PasswordResetToken {
 
 // FromPasswordResetTokenEntity converts an entity to a GORM PasswordResetToken model
 func (p *PasswordResetToken) FromEntity(entity *entities.PasswordResetToken) {
-	p.ID = entity.ID
+	p.ID = uuid.MustParse(entity.ID)
 	p.UserID = entity.UserID
 	p.Token = entity.Token
 	p.Email = entity.Email

@@ -5,8 +5,8 @@ import (
 	stderrors "errors"
 	"fmt"
 	"time"
+	"uuid"
 
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 
 	"github.com/yeferson59/go-better-auth/internal/core/entities"
@@ -33,10 +33,7 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 // Create creates a new user
 func (r *UserRepository) Create(ctx context.Context, user *entities.User) error {
 	if user.ID == "" {
-		id, err := uuid.NewV7()
-		if err != nil {
-			return err
-		}
+		id := uuid.NewV7()
 
 		user.ID = id.String()
 	}

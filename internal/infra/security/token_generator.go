@@ -8,9 +8,9 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"uuid"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/google/uuid"
 
 	"github.com/yeferson59/go-better-auth/internal/core/interfaces"
 )
@@ -72,10 +72,8 @@ func (g *SecureTokenGenerator) GenerateSecure(length int) (string, error) {
 
 // GenerateUUID generates a UUID token
 func (g *SecureTokenGenerator) GenerateUUID() (string, error) {
-	id, err := uuid.NewRandom()
-	if err != nil {
-		return "", fmt.Errorf("failed to generate UUID: %w", err)
-	}
+	id := uuid.NewV7()
+
 	return id.String(), nil
 }
 

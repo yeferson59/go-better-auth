@@ -2,13 +2,14 @@ package models
 
 import (
 	"time"
+	"uuid"
 
 	"gorm.io/gorm"
 )
 
 // User represents the users table
 type User struct {
-	ID          string         `gorm:"primaryKey;type:varchar(36)" json:"id"`
+	ID          uuid.UUID      `gorm:"primaryKey;type:varchar(36)" json:"id"`
 	Email       string         `gorm:"uniqueIndex;not null" json:"email"`
 	Username    string         `gorm:"uniqueIndex" json:"username"`
 	Password    string         `gorm:"not null" json:"-"`
@@ -31,7 +32,7 @@ type User struct {
 
 // Role represents the roles table
 type Role struct {
-	ID          string         `gorm:"primaryKey;type:varchar(36)" json:"id"`
+	ID          uuid.UUID      `gorm:"primaryKey;type:varchar(36)" json:"id"`
 	Name        string         `gorm:"uniqueIndex;not null" json:"name"`
 	Description string         `json:"description"`
 	IsSystem    bool           `gorm:"default:false" json:"isSystem"`
@@ -46,7 +47,7 @@ type Role struct {
 
 // Permission represents the permissions table
 type Permission struct {
-	ID          string         `gorm:"primaryKey;type:varchar(36)" json:"id"`
+	ID          uuid.UUID      `gorm:"primaryKey;type:varchar(36)" json:"id"`
 	Name        string         `gorm:"uniqueIndex;not null" json:"name"`
 	Description string         `json:"description"`
 	Resource    string         `gorm:"not null" json:"resource"`
@@ -62,7 +63,7 @@ type Permission struct {
 
 // Session represents the sessions table
 type Session struct {
-	ID           string         `gorm:"primaryKey;type:varchar(36)" json:"id"`
+	ID           uuid.UUID      `gorm:"primaryKey;type:varchar(36)" json:"id"`
 	UserID       string         `gorm:"not null;index" json:"userId"`
 	Token        string         `gorm:"uniqueIndex;not null" json:"token"`
 	RefreshToken string         `gorm:"uniqueIndex" json:"refreshToken"`
@@ -80,7 +81,7 @@ type Session struct {
 
 // OAuthLink represents the oauth_links table
 type OAuthLink struct {
-	ID           string         `gorm:"primaryKey;type:varchar(36)" json:"id"`
+	ID           uuid.UUID      `gorm:"primaryKey;type:varchar(36)" json:"id"`
 	UserID       string         `gorm:"not null;index" json:"userId"`
 	ProviderName string         `gorm:"not null" json:"providerName"`
 	ProviderID   string         `gorm:"not null" json:"providerId"`
@@ -97,7 +98,7 @@ type OAuthLink struct {
 
 // OAuthProvider represents the oauth_providers table
 type OAuthProvider struct {
-	ID           string         `gorm:"primaryKey;type:varchar(36)" json:"id"`
+	ID           uuid.UUID      `gorm:"primaryKey;type:varchar(36)" json:"id"`
 	Name         string         `gorm:"uniqueIndex;not null" json:"name"`
 	DisplayName  string         `gorm:"not null" json:"displayName"`
 	ClientID     string         `gorm:"not null" json:"clientId"`
@@ -116,7 +117,7 @@ type OAuthProvider struct {
 
 // Token represents the tokens table
 type Token struct {
-	ID        string         `gorm:"primaryKey;type:varchar(36)" json:"id"`
+	ID        uuid.UUID      `gorm:"primaryKey;type:varchar(36)" json:"id"`
 	UserID    string         `gorm:"index" json:"userId"`
 	Token     string         `gorm:"uniqueIndex;not null" json:"token"`
 	Type      string         `gorm:"not null;index" json:"type"`
@@ -133,7 +134,7 @@ type Token struct {
 
 // PasswordResetToken represents the password_reset_tokens table
 type PasswordResetToken struct {
-	ID        string         `gorm:"primaryKey;type:varchar(36)" json:"id"`
+	ID        uuid.UUID      `gorm:"primaryKey;type:varchar(36)" json:"id"`
 	UserID    string         `gorm:"not null;index" json:"userId"`
 	Token     string         `gorm:"uniqueIndex;not null" json:"token"`
 	Email     string         `gorm:"not null;index" json:"email"`
@@ -148,7 +149,7 @@ type PasswordResetToken struct {
 
 // UserRole represents the user_roles join table
 type UserRole struct {
-	ID         string    `gorm:"primaryKey;type:varchar(36)" json:"id"`
+	ID         uuid.UUID `gorm:"primaryKey;type:varchar(36)" json:"id"`
 	UserID     string    `gorm:"not null;index" json:"userId"`
 	RoleID     string    `gorm:"not null;index" json:"roleId"`
 	AssignedBy string    `json:"assignedBy"`
@@ -161,7 +162,7 @@ type UserRole struct {
 
 // RolePermission represents the role_permissions join table
 type RolePermission struct {
-	ID           string    `gorm:"primaryKey;type:varchar(36)" json:"id"`
+	ID           uuid.UUID `gorm:"primaryKey;type:varchar(36)" json:"id"`
 	RoleID       string    `gorm:"not null;index" json:"roleId"`
 	PermissionID string    `gorm:"not null;index" json:"permissionId"`
 	GrantedBy    string    `json:"grantedBy"`
