@@ -34,7 +34,7 @@ This project follows hexagonal architecture (ports and adapters) principles:
 ### Installation
 
 ```bash
-go get github.com/yourusername/go-better-auth
+go get github.com/yeferson59/go-better-auth
 ```
 
 ### Basic Usage
@@ -43,7 +43,7 @@ go get github.com/yourusername/go-better-auth
 package main
 
 import (
-    "github.com/yourusername/go-better-auth/pkg/auth"
+    "github.com/yeferson59/go-better-auth/pkg/auth"
     "github.com/gin-gonic/gin"
 )
 
@@ -92,7 +92,7 @@ make examples
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/go-better-auth.git
+git clone https://github.com/yeferson59/go-better-auth.git
 cd go-better-auth
 ```
 
@@ -172,9 +172,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-- 📖 [Documentation](https://github.com/yourusername/go-better-auth/wiki)
-- 🐛 [Issue Tracker](https://github.com/yourusername/go-better-auth/issues)
-- 💬 [Discussions](https://github.com/yourusername/go-better-auth/discussions)
+- 📖 [Documentation](https://github.com/yeferson59/go-better-auth/wiki)
+- 🐛 [Issue Tracker](https://github.com/yeferson59/go-better-auth/issues)
+- 💬 [Discussions](https://github.com/yeferson59/go-better-auth/discussions)
 
 ## Acknowledgments
 
