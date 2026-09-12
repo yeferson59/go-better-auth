@@ -44,7 +44,7 @@ type OAuthTokens struct {
 	TokenType    string `json:"tokenType"`
 	ExpiresIn    int    `json:"expiresIn"`
 	Scope        string `json:"scope,omitempty"`
-	IdToken      string `json:"idToken,omitempty"`
+	IDToken      string `json:"idToken,omitempty"`
 }
 
 // TokenValidationResult represents token validation result

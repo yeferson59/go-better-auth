@@ -68,7 +68,7 @@ const (
 	TokenTypeSession           TokenType = "session"
 	TokenTypeRefresh           TokenType = "refresh"
 	TokenTypePasswordReset     TokenType = "password_reset"
-	TokenTypeEmailVerification TokenType = "email_verification"
+	TokenTypeEmailVerification TokenType = "email_verification" //nolint:gosec // token type identifier, not a credential
 	TokenTypeInvitation        TokenType = "invitation"
 	TokenTypeAPIKey            TokenType = "api_key"
 )

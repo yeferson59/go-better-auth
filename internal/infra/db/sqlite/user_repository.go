@@ -49,7 +49,7 @@ func (r *UserRepository) Create(ctx context.Context, user *entities.User) error 
 		return fmt.Errorf("failed to create user: %w", err)
 	}
 
-	user = model.ToEntity()
+	*user = *model.ToEntity()
 
 	return nil
 }
@@ -113,7 +113,7 @@ func (r *UserRepository) Update(ctx context.Context, user *entities.User) error 
 		return stderrors.New("failed to update user")
 	}
 
-	user = model.ToEntity()
+	*user = *model.ToEntity()
 
 	return nil
 }
@@ -191,7 +191,7 @@ func (r *UserRepository) GetByOAuthProvider(ctx context.Context, provider, provi
 
 // GetWithRoles retrieves a user with their roles
 func (r *UserRepository) GetWithRoles(ctx context.Context, id string) (*entities.User, error) {
-	model, err := gorm.G[models.User](r.db).Preload("Roles", func(db gorm.PreloadBuilder) error { return nil }).Where("id = ?", id).First(ctx)
+	model, err := gorm.G[models.User](r.db).Preload("Roles", func(_ gorm.PreloadBuilder) error { return nil }).Where("id = ?", id).First(ctx)
 	if err != nil {
 		if stderrors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, apperrors.NewUserNotFoundError(id)
@@ -205,7 +205,7 @@ func (r *UserRepository) GetWithRoles(ctx context.Context, id string) (*entities
 
 // GetWithSessions retrieves a user with their sessions
 func (r *UserRepository) GetWithSessions(ctx context.Context, id string) (*entities.User, error) {
-	model, err := gorm.G[models.User](r.db).Preload("Sessions", func(db gorm.PreloadBuilder) error { return nil }).Where("id = ?", id).First(ctx)
+	model, err := gorm.G[models.User](r.db).Preload("Sessions", func(_ gorm.PreloadBuilder) error { return nil }).Where("id = ?", id).First(ctx)
 	if err != nil {
 		if stderrors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, apperrors.NewUserNotFoundError(id)

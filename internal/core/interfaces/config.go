@@ -129,7 +129,7 @@ type SessionConfig struct {
 	CookiePath   string        `json:"cookiePath" yaml:"cookie_path"`
 	CookieDomain string        `json:"cookieDomain" yaml:"cookie_domain"`
 	Secure       bool          `json:"secure" yaml:"secure"`
-	HttpOnly     bool          `json:"httpOnly" yaml:"http_only"`
+	HTTPOnly     bool          `json:"httpOnly" yaml:"http_only"`
 	SameSite     string        `json:"sameSite" yaml:"same_site"`
 	Store        string        `json:"store" yaml:"store"` // "memory", "redis", "database"
 }
@@ -419,7 +419,7 @@ var (
 		CookieName: "session",
 		CookiePath: "/",
 		Secure:     false,
-		HttpOnly:   true,
+		HTTPOnly:   true,
 		SameSite:   "lax",
 		Store:      "memory",
 	}

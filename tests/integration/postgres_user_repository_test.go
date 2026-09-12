@@ -39,7 +39,7 @@ func TestPostgresUserRepository(t *testing.T) {
 		),
 	)
 	require.NoError(t, err)
-	defer postgresContainer.Terminate(ctx)
+	defer func() { _ = postgresContainer.Terminate(ctx) }()
 
 	// Get connection string
 	connStr, err := postgresContainer.ConnectionString(ctx, "sslmode=disable")

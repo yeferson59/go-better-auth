@@ -18,6 +18,8 @@ const (
 )
 
 // DefaultProviderConfigs provides default configurations for supported providers
+//
+//nolint:gosec // TokenURL values are public OAuth endpoints, not credentials
 var DefaultProviderConfigs = map[Provider]OAuthProvider{
 	Google: {
 		Name:        Google,

@@ -29,7 +29,7 @@ type EnvConfig struct {
 	SessionExpiration time.Duration `env:"SESSION_EXPIRATION" envDefault:"24h"`
 	SessionCookieName string        `env:"SESSION_COOKIE_NAME" envDefault:"session"`
 	SessionSecure     bool          `env:"SESSION_SECURE" envDefault:"true"`
-	SessionHttpOnly   bool          `env:"SESSION_HTTP_ONLY" envDefault:"true"`
+	SessionHTTPOnly   bool          `env:"SESSION_HTTP_ONLY" envDefault:"true"`
 
 	// Password Configuration
 	PasswordAlgorithm     string `env:"PASSWORD_ALGORITHM" envDefault:"bcrypt"`
@@ -97,14 +97,14 @@ type EnvConfig struct {
 	FeatureTwoFactorAuth     bool `env:"FEATURE_TWO_FACTOR_AUTH" envDefault:"false"`
 }
 
-// ConfigManager implements the interfaces.ConfigManager interface
-type ConfigManager struct {
+// Manager implements the interfaces.ConfigManager interface
+type Manager struct {
 	envConfig *EnvConfig
 	viper     *viper.Viper
 }
 
-// NewConfigManager creates a new ConfigManager instance
-func NewConfigManager() (*ConfigManager, error) {
+// NewManager creates a new configuration Manager instance
+func NewManager() (*Manager, error) {
 	envConfig := &EnvConfig{}
 
 	// Parse environment variables
@@ -132,7 +132,7 @@ func NewConfigManager() (*ConfigManager, error) {
 		}
 	}
 
-	manager := &ConfigManager{
+	manager := &Manager{
 		envConfig: envConfig,
 		viper:     v,
 	}
@@ -147,7 +147,7 @@ func NewConfigManager() (*ConfigManager, error) {
 }
 
 // LoadConfig loads configuration from multiple sources
-func (c *ConfigManager) LoadConfig(sources ...interfaces.ConfigSource) error {
+func (c *Manager) LoadConfig(sources ...interfaces.ConfigSource) error {
 	for _, source := range sources {
 		data, err := source.Load()
 		if err != nil {
@@ -163,7 +163,7 @@ func (c *ConfigManager) LoadConfig(sources ...interfaces.ConfigSource) error {
 }
 
 // GetConfig returns the current configuration
-func (c *ConfigManager) GetConfig() *interfaces.AuthConfig {
+func (c *Manager) GetConfig() *interfaces.AuthConfig {
 	return &interfaces.AuthConfig{
 		JWT: interfaces.JWTConfig{
 			Secret:            c.envConfig.JWTSecret,
@@ -181,7 +181,7 @@ func (c *ConfigManager) GetConfig() *interfaces.AuthConfig {
 			CookiePath:   "/",
 			CookieDomain: "",
 			Secure:       c.envConfig.SessionSecure,
-			HttpOnly:     c.envConfig.SessionHttpOnly,
+			HTTPOnly:     c.envConfig.SessionHTTPOnly,
 			SameSite:     "lax",
 			Store:        "memory",
 		},
@@ -244,7 +244,7 @@ func (c *ConfigManager) GetConfig() *interfaces.AuthConfig {
 }
 
 // ValidateConfig validates the configuration
-func (c *ConfigManager) ValidateConfig() error {
+func (c *Manager) ValidateConfig() error {
 	config := c.GetConfig()
 
 	// Validate JWT secret
@@ -280,7 +280,7 @@ func (c *ConfigManager) ValidateConfig() error {
 }
 
 // ReloadConfig reloads the configuration
-func (c *ConfigManager) ReloadConfig() error {
+func (c *Manager) ReloadConfig() error {
 	// Re-parse environment variables
 	if err := env.Parse(c.envConfig); err != nil {
 		return fmt.Errorf("failed to parse environment variables: %w", err)
@@ -297,9 +297,9 @@ func (c *ConfigManager) ReloadConfig() error {
 }
 
 // WatchConfig watches for configuration changes
-func (c *ConfigManager) WatchConfig(callback func(*interfaces.AuthConfig)) error {
+func (c *Manager) WatchConfig(callback func(*interfaces.AuthConfig)) error {
 	c.viper.WatchConfig()
-	c.viper.OnConfigChange(func(e fsnotify.Event) {
+	c.viper.OnConfigChange(func(_ fsnotify.Event) {
 		callback(c.GetConfig())
 	})
 
@@ -307,12 +307,12 @@ func (c *ConfigManager) WatchConfig(callback func(*interfaces.AuthConfig)) error
 }
 
 // GetConfigByKey gets configuration by key path
-func (c *ConfigManager) GetConfigByKey(key string) (any, error) {
+func (c *Manager) GetConfigByKey(key string) (any, error) {
 	return c.viper.Get(key), nil
 }
 
 // SetConfigByKey sets configuration by key path
-func (c *ConfigManager) SetConfigByKey(key string, value any) error {
+func (c *Manager) SetConfigByKey(key string, value any) error {
 	c.viper.Set(key, value)
 	return nil
 }

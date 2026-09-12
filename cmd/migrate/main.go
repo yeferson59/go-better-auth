@@ -179,12 +179,12 @@ func createMigration(name, driver string) error {
 	downFile := fmt.Sprintf("%s/%03d_%s.down.sql", migrationDir, nextNum, name)
 
 	// Create up migration
-	if err := os.WriteFile(upFile, fmt.Appendf([]byte{}, "-- Migration: %s\n-- Up migration\n", name), 0644); err != nil {
+	if err := os.WriteFile(upFile, fmt.Appendf([]byte{}, "-- Migration: %s\n-- Up migration\n", name), 0600); err != nil {
 		return err
 	}
 
 	// Create down migration
-	if err := os.WriteFile(downFile, fmt.Appendf([]byte{}, "-- Migration: %s\n-- Down migration\n", name), 0644); err != nil {
+	if err := os.WriteFile(downFile, fmt.Appendf([]byte{}, "-- Migration: %s\n-- Down migration\n", name), 0600); err != nil {
 		return err
 	}
 

@@ -2,6 +2,7 @@ package interfaces
 
 import (
 	"context"
+
 	"github.com/yeferson59/go-better-auth/internal/core/entities"
 )
 

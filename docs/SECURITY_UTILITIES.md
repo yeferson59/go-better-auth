@@ -149,7 +149,7 @@ The configuration manager handles environment-based configuration with support f
 
 ```go
 // Create configuration manager
-configManager, err := config.NewConfigManager()
+configManager, err := config.NewManager()
 if err != nil {
     log.Fatal(err)
 }

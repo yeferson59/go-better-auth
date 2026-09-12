@@ -13,9 +13,9 @@ import (
 )
 
 func main() {
-	gotenv.Load()
+	_ = gotenv.Load()
 	// Initialize configuration manager
-	configManager, err := config.NewConfigManager()
+	configManager, err := config.NewManager()
 	if err != nil {
 		log.Fatalf("Failed to create config manager: %v", err)
 	}

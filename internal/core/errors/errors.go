@@ -37,7 +37,7 @@ func (e *Error) Is(target error) bool {
 // Common error codes
 const (
 	// Authentication errors
-	ErrInvalidCredentials    = "INVALID_CREDENTIALS"
+	ErrInvalidCredentials    = "INVALID_CREDENTIALS" //nolint:gosec // error code identifier, not a credential
 	ErrUserNotFound          = "USER_NOT_FOUND"
 	ErrUserAlreadyExists     = "USER_ALREADY_EXISTS"
 	ErrEmailAlreadyExists    = "EMAIL_ALREADY_EXISTS"
@@ -80,7 +80,7 @@ const (
 	ErrOAuthProviderDisabled     = "OAUTH_PROVIDER_DISABLED"
 	ErrOAuthInvalidState         = "OAUTH_INVALID_STATE"
 	ErrOAuthInvalidCode          = "OAUTH_INVALID_CODE"
-	ErrOAuthTokenExpired         = "OAUTH_TOKEN_EXPIRED"
+	ErrOAuthTokenExpired         = "OAUTH_TOKEN_EXPIRED" //nolint:gosec // error code identifier, not a credential
 	ErrOAuthAccountNotLinked     = "OAUTH_ACCOUNT_NOT_LINKED"
 	ErrOAuthAccountAlreadyLinked = "OAUTH_ACCOUNT_ALREADY_LINKED"
 

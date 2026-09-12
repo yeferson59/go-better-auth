@@ -204,7 +204,7 @@ func (b *RedisTokenBlacklist) Remove(ctx context.Context, token string) error {
 }
 
 // Cleanup removes expired blacklisted tokens (Redis handles this automatically)
-func (b *RedisTokenBlacklist) Cleanup(ctx context.Context) error {
+func (b *RedisTokenBlacklist) Cleanup(_ context.Context) error {
 	// Redis automatically removes expired keys, so this is a no-op
 	return nil
 }

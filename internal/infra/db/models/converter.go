@@ -188,12 +188,12 @@ func (o *OAuthProvider) ToEntity() *entities.OAuthProvider {
 
 	// Convert scopes from JSON string to slice
 	if o.Scopes != "" {
-		json.Unmarshal([]byte(o.Scopes), &entity.Scopes)
+		_ = json.Unmarshal([]byte(o.Scopes), &entity.Scopes)
 	}
 
 	// Convert config from JSON string to map
 	if o.Config != "" {
-		json.Unmarshal([]byte(o.Config), &entity.Config)
+		_ = json.Unmarshal([]byte(o.Config), &entity.Config)
 	}
 
 	return entity
@@ -244,7 +244,7 @@ func (t *Token) ToEntity() *entities.Token {
 
 	// Convert data from JSON string to map
 	if t.Data != "" {
-		json.Unmarshal([]byte(t.Data), &entity.Data)
+		_ = json.Unmarshal([]byte(t.Data), &entity.Data)
 	}
 
 	return entity

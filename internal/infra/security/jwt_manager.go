@@ -385,18 +385,3 @@ func getTimeClaim(claims jwt.MapClaims, key string) time.Time {
 	}
 	return time.Time{}
 }
-
-func getStringSliceClaim(claims jwt.MapClaims, key string) []string {
-	if value, exists := claims[key]; exists {
-		if slice, ok := value.([]any); ok {
-			result := make([]string, 0, len(slice))
-			for _, item := range slice {
-				if str, ok := item.(string); ok {
-					result = append(result, str)
-				}
-			}
-			return result
-		}
-	}
-	return nil
-}
